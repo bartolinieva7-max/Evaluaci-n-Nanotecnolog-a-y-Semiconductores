@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Evaluación · Nanotecnología y Semiconductores</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #eef2f7;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      padding: 1.2rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .evaluation-container {
+      max-width: 950px;
+      width: 100%;
+      margin: 0 auto;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px -12px rgba(0,20,40,0.2);
+      padding: 1.8rem 1.8rem 2rem;
+      border: 1px solid #cbd6e6;
+    }
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #1e3a5f;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 3px solid #9bb7d4;
+      padding-bottom: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    h1 small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #4a627a;
+      margin-left: auto;
+    }
+    .info-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      background: #e1e9f2;
+      padding: 0.7rem 1.2rem;
+      border-radius: 60px;
+    }
+    .score-box {
+      background: #1e3a5f;
+      color: white;
+      padding: 0.4rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .badge {
+      background: white;
+      color: #1e3a5f;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .questions-area {
+      margin: 1.5rem 0 1rem;
+    }
+    .question-card {
+      background: #fafcff;
+      border-radius: 1.2rem;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.3rem;
+      border: 1px solid #d0dfee;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+    }
+    .question-header {
+      display: flex;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #1e3a5f;
+      font-size: 1rem;
+      align-items: baseline;
+    }
+    .q-num {
+      background: #1e3a5f;
+      color: white;
+      border-radius: 30px;
+      padding: 0.15rem 0.7rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin: 0.5rem 0 0.8rem;
+    }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      background: #ffffff;
+      border: 1.5px solid #d7e2ee;
+      border-radius: 1rem;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .option:hover {
+      background: #eef4fc;
+      border-color: #7a9bcb;
+    }
+    .option input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 2px solid #6f8db0;
+      border-radius: 50%;
+      margin-top: 0.1rem;
+      cursor: pointer;
+      background: white;
+      flex-shrink: 0;
+    }
+    .option input[type="radio"]:checked {
+      background-color: #1e6f5c;
+      border-color: #1e6f5c;
+      box-shadow: inset 0 0 0 3px white;
+    }
+    .option label {
+      flex: 1;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #1f2e3f;
+      line-height: 1.4;
+    }
+    .feedback {
+      margin-top: 0.8rem;
+      padding: 0.7rem 1rem;
+      border-radius: 0.8rem;
+      font-size: 0.85rem;
+      background: #f7f9fc;
+      border-left: 5px solid;
+      color: #2a405c;
+    }
+    .feedback.correct {
+      border-left-color: #2b8c5e;
+      background: #e9f6ef;
+    }
+    .feedback.incorrect {
+      border-left-color: #c13b3b;
+      background: #ffeeee;
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1.8rem 0 0.5rem;
+    }
+    .btn {
+      border: none;
+      background: #dbe4ed;
+      color: #1e3a5f;
+      font-weight: 600;
+      padding: 0.75rem 1.8rem;
+      border-radius: 60px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid #b8cade;
+    }
+    .btn-primary {
+      background: #1e3a5f;
+      color: white;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #102b44;
+      transform: scale(1.02);
+    }
+    .btn-secondary {
+      background: #eef3f9;
+    }
+    .btn-secondary:hover {
+      background: #dae2ee;
+    }
+    .btn-success {
+      background: #2b8c5e;
+      color: white;
+      border: none;
+    }
+    .btn-success:hover {
+      background: #1f7049;
+    }
+    .footer-note {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #6e8898;
+    }
+    @media (max-width: 600px) {
+      body { padding: 0.8rem; }
+      .evaluation-container { padding: 1.2rem; }
+      h1 { font-size: 1.5rem; flex-wrap: wrap; }
+      .btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="evaluation-container">
+  <h1>
+    ⚡ Evaluación · Nanotecnología y Semiconductores
+    <small>10 preguntas aleatorias</small>
+  </h1>
+  <div class="info-bar">
+    <span class="badge">🎲 40 preguntas en el banco</span>
+    <span class="score-box" id="scoreDisplay">0 / 10</span>
+  </div>
+
+  <div id="questionsArea" class="questions-area">
+    <!-- Aquí se renderizan las 10 preguntas -->
+  </div>
+
+  <div class="action-buttons">
+    <button id="checkBtn" class="btn btn-success">✅ Corregir evaluación</button>
+    <button id="newTestBtn" class="btn btn-primary">🔄 Nueva evaluación (siguiente alumna)</button>
+  </div>
+  <div class="footer-note">
+    ✔️ Cada pregunta correcta suma 1 punto. Máximo 10. Cada nueva prueba mezcla el banco.
+  </div>
+</div>
+
+<script>
+  (function(){
+    "use strict";
+
+    // ---------- BANCO DE PREGUNTAS UNIFICADO (40 preguntas) ----------
+    // Bloque 1: 20 preguntas de "Nanotecnología de semiconductores y Hardware"
+    // Bloque 2: 20 preguntas de "El Viaje al Microverso: Semiconductores y Litografía"
+    
+    const bank = [];
+
+    // ===== BLOQUE 1: HARDWARE Y NANOTECNOLOGÍA (20 preguntas) =====
+    const hardwareQuestions = [
+      {
+        text: "En la nanotecnología de semiconductores, ¿a cuánto equivale exactamente 1 nanómetro (nm)?",
+        options: ["10⁻⁶ metros (micrómetro).", "10⁻⁹ metros.", "10⁻¹² metros (picómetro)."],
+        correct: "B",
+        explanation: "1 nm = 10⁻⁹ m, es la métrica estándar para definir la escala de los transistores modernos."
+      },
+      {
+        text: "¿Cuál es la principal ventaja de utilizar litografía EUV (13.5 nm) frente a la DUV (193 nm)?",
+        options: ["Permite fabricar estructuras más pequeñas y densas.", "Es un proceso más económico y simple.", "No requiere el uso de fotoresist."],
+        correct: "A",
+        explanation: "La menor longitud de onda de la EUV facilita procesos en nodos avanzados como 3 nm."
+      },
+      {
+        text: "¿Qué tipo de memoria es estándar en servidores rack para garantizar la integridad de los datos?",
+        options: ["Memoria RAM DDR4 convencional.", "Memoria ECC (Error Correcting Code).", "Memoria NVMe."],
+        correct: "B",
+        explanation: "La memoria ECC corrige errores de bits, fundamental en servidores."
+      },
+      {
+        text: "En una configuración de servidor, ¿qué nivel de RAID prioriza la velocidad absoluta sacrificando la redundancia?",
+        options: ["RAID 1 (espejo).", "RAID 5 (paridad).", "RAID 0 (striping)."],
+        correct: "C",
+        explanation: "RAID 0 distribuye datos entre discos para máxima velocidad, pero sin tolerancia a fallos."
+      },
+      {
+        text: "¿Qué significa una redundancia de fuente de poder (PSU) tipo '2N'?",
+        options: ["Una fuente de repuesto guardada en el rack.", "Dos circuitos de alimentación totalmente independientes.", "El servidor consume el doble de energía."],
+        correct: "B",
+        explanation: "Redundancia 2N implica dos ramas eléctricas independientes; si una falla, la otra mantiene el servidor activo."
+      },
+      {
+        text: "Si una antena WiFi tiene una mayor ganancia (dBi), ¿qué efecto produce en su patrón de radiación?",
+        options: ["Aumenta la cobertura en todas direcciones (360°).", "Concentra la energía en una dirección, aumentando el alcance pero reduciendo el ángulo.", "Mejora la penetración de obstáculos como paredes."],
+        correct: "B",
+        explanation: "Mayor ganancia implica mayor directividad, enfocando la energía."
+      },
+      {
+        text: "¿Cuál es una característica clave de la frecuencia de 2.4 GHz frente a la de 5 GHz en WiFi?",
+        options: ["Ofrece un mayor ancho de banda.", "Mejor penetración de obstáculos y mayor cobertura.", "Sufre menos interferencias."],
+        correct: "B",
+        explanation: "Las ondas de 2.4 GHz viajan mejor a través de paredes."
+      },
+      {
+        text: "Según el estándar IEEE 802.3af/at (PoE), ¿cuál es la distancia máxima práctica de un cable de datos sin repetidor?",
+        options: ["50 metros.", "100 metros.", "250 metros."],
+        correct: "B",
+        explanation: "100 metros es el límite técnico para PoE y Ethernet."
+      },
+      {
+        text: "¿Qué placa de desarrollo IoT es reconocida por incluir Wi-Fi y Bluetooth nativos en un entorno de multitarea?",
+        options: ["Arduino MKR1000.", "ESP32.", "Raspberry Pi Zero W."],
+        correct: "B",
+        explanation: "ESP32 integra Wi-Fi/Bluetooth y es versátil para multitarea."
+      },
+      {
+        text: "En el cálculo de un Link Budget, ¿qué elemento resta potencia a la señal?",
+        options: ["Ganancia de la antena TX.", "Pérdidas por espacio libre (FSL).", "Sensibilidad del receptor."],
+        correct: "B",
+        explanation: "Las pérdidas por espacio libre (FSL) degradan la señal con la distancia."
+      },
+      {
+        text: "¿Cuál es el medio físico utilizado en las conexiones ADSL?",
+        options: ["Fibra de vidrio.", "Par de cobre telefónico.", "Ondas de radio."],
+        correct: "B",
+        explanation: "ADSL usa el par de cobre de la red telefónica."
+      },
+      {
+        text: "¿Cuál es la principal diferencia de simetría entre ADSL y la Fibra Óptica convencional?",
+        options: ["ADSL es siempre simétrica.", "La Fibra Óptica puede ofrecer velocidades simétricas.", "Ambas son siempre asimétricas."],
+        correct: "B",
+        explanation: "La fibra permite subida y bajada simétricas, a diferencia de ADSL que es típicamente asimétrico."
+      },
+      {
+        text: "En una arquitectura de fibra GPON, ¿qué dispositivo se instala en el domicilio del cliente?",
+        options: ["OLT.", "ONT.", "Splitter."],
+        correct: "B",
+        explanation: "ONT (Optical Network Terminal) convierte señal óptica a eléctrica en el hogar."
+      },
+      {
+        text: "¿Por qué la fibra óptica se considera más segura que el cobre frente a ataques físicos?",
+        options: ["Inmune a interferencias electromagnéticas y difícil de intervenir sin ser detectado.", "Cables más gruesos y difíciles de cortar.", "No requiere electricidad."],
+        correct: "A",
+        explanation: "La fibra no emite señales radiadas y un corte interrumpe la luz, detectable."
+      },
+      {
+        text: "¿Qué topología de red es la preferida en centros de datos para IA por su baja latencia?",
+        options: ["Estrella simple.", "Leaf-Spine.", "Anillo."],
+        correct: "B",
+        explanation: "Leaf-Spine minimiza saltos y optimiza el tráfico horizontal (este-oeste)."
+      },
+      {
+        text: "¿Qué función cumple NVLink en un servidor de Inteligencia Artificial?",
+        options: ["Conectar el servidor a Internet.", "Interconexión de alta velocidad entre GPUs.", "Gestionar la refrigeración líquida."],
+        correct: "B",
+        explanation: "NVLink permite a las GPUs compartir datos más rápido que PCIe."
+      },
+      {
+        text: "Ante la alta densidad de calor en racks de IA (30–60 kW), ¿qué solución de refrigeración se vuelve necesaria?",
+        options: ["Ventiladores convencionales de oficina.", "Refrigeración líquida o pasillos frío/caliente.", "Abrir las ventanas del centro de datos."],
+        correct: "B",
+        explanation: "Métodos avanzados como refrigeración líquida o contención de pasillos gestionan el calor extremo."
+      },
+      {
+        text: "¿Cuál es el principio fundamental de la arquitectura de seguridad 'Zero Trust'?",
+        options: ["Confiar en cualquier dispositivo dentro de la oficina.", "Nunca confiar, siempre verificar.", "Eliminar todas las contraseñas."],
+        correct: "B",
+        explanation: "Zero Trust requiere autenticación continua y mínimo privilegio, sin confianza por defecto."
+      },
+      {
+        text: "¿Para qué se utilizan las VLANs en la administración de redes industriales?",
+        options: ["Para aumentar la velocidad del Wi-Fi.", "Para segmentar la red y aislar dispositivos (ej. IoT de servidores).", "Para reemplazar la necesidad de switches físicos."],
+        correct: "B",
+        explanation: "Las VLANs segmentan lógicamente la red, mejorando seguridad y reduciendo dominios de broadcast."
+      },
+      {
+        text: "¿Qué protocolo de seguridad es el más actual y recomendado para dispositivos IoT en 2025?",
+        options: ["WEP.", "WPA2.", "WPA3."],
+        correct: "C",
+        explanation: "WPA3 es el estándar más actual con mejoras en cifrado y protección."
+      }
+    ];
+
+    hardwareQuestions.forEach((q, idx) => {
+      bank.push({
+        id: `hw-${idx}`,
+        text: q.text,
+        options: q.options,
+        correct: q.correct,
+        explanation: q.explanation
+      });
+    });
+
+    // ===== BLOQUE 2: SEMICONDUCTORES Y LITOGRAFÍA (20 preguntas) =====
+    const microQuestions = [
+      { text: "¿Cuál es la definición precisa de un nanómetro según las fuentes?",
+        options: ["La millonésima parte de un metro (10⁻⁶).", "La mil millonésima parte de un metro (10⁻⁹).", "La billonésima parte de un milímetro.", "El tamaño exacto de un átomo de helio."],
+        correct: "B", explanation: "10⁻⁹ metros. A es micrómetro; C error de escala; D átomo de helio mide 0.1 nm." },
+      { text: "En el 'Motor de la Lógica', ¿qué sucede físicamente cuando el sistema registra un '1' binario?",
+        options: ["El flujo eléctrico se detiene por completo.", "El transistor se encuentra en estado cerrado o bloqueo.", "La electricidad recorre el transistor de extremo a extremo (Estado Abierto).", "El componente se apaga para ahorrar energía."],
+        correct: "C", explanation: "Estado abierto permite paso de electricidad (1). A, B y D describen estado de bloqueo (0)." },
+      { text: "¿Por qué la reducción de la distancia física en un chip aumenta la velocidad de procesamiento?",
+        options: ["Porque los electrones viajan más lento pero con más fuerza.", "Porque disminuye la distancia que la electricidad debe recorrer, permitiendo resolver algoritmos más rápido.", "Porque el silicio se vuelve más conductor al ser más pequeño.", "Porque elimina la necesidad de usar un reloj interno (GHz)."],
+        correct: "B", explanation: "Menor distancia = mayor velocidad." },
+      { text: "¿Qué beneficio de la miniaturización impacta directamente en la autonomía de dispositivos móviles?",
+        options: ["La densidad de capacidad.", "La frecuencia de 1 Gigahercio.", "La eficiencia (Consumo), ya que trayectos más cortos requieren menos voltaje.", "El uso de litografía de 10 micrómetros."],
+        correct: "C", explanation: "Menos voltaje = menos calor + mayor autonomía." },
+      { text: "Según las fuentes, ¿qué demostró Intel al pasar de una arquitectura de 45nm a una de 14nm?",
+        options: ["Que el rendimiento global se duplicó casi de forma lineal.", "Que los chips se volvieron más caros de producir.", "Que el silicio dejó de ser útil.", "Que la resistencia eléctrica aumentó drásticamente."],
+        correct: "A", explanation: "Duplicación del rendimiento." },
+      { text: "¿A cuántas activaciones eléctricas por segundo equivale una frecuencia de 1 Gigahercio (GHz)?",
+        options: ["Un millón.", "Diez mil millones.", "Mil millones.", "600 mil millones."],
+        correct: "C", explanation: "1 GHz = 10⁹ activaciones/segundo." },
+      { text: "¿En qué año se rompieron las barreras de los 3nm en la fabricación de procesadores?",
+        options: ["1971.", "2014.", "2022.", "2018."],
+        correct: "C", explanation: "TSMC logró 3nm en 2022." },
+      { text: "En el modelo 'Tick-Tock', ¿en qué consiste el paso 'TOCK'?",
+        options: ["En reducir el tamaño del transistor para estrenar un nuevo proceso.", "En optimizar la arquitectura interna manteniendo el tamaño del transistor del año anterior.", "En cambiar el material de Silicio a Nitruro de Galio.", "En aumentar físicamente el tamaño del chip para que quepan más núcleos."],
+        correct: "B", explanation: "Optimización de arquitectura (TOCK). A es TICK." },
+      { text: "¿Qué nivel de complejidad tiene el proceso de fabricación de un procesador moderno?",
+        options: ["Se realiza en menos de 10 pasos en una oficina estándar.", "Involucra más de 500 pasos únicos en salas limpias.", "Solo requiere una máquina de litografía casera.", "Es un proceso sencillo que cualquier empresa puede hacer."],
+        correct: "B", explanation: "Más de 500 pasos en salas limpias." },
+      { text: "¿Cómo se compara la precisión de la litografía de 3nm con la biología humana?",
+        options: ["Es tan gruesa como un cabello humano.", "Es equivalente al tamaño de una célula de la piel.", "Maneja patrones de grabado más finos que el propio ADN humano.", "Es del mismo tamaño que un glóbulo rojo."],
+        correct: "C", explanation: "Más fino que el ADN." },
+      { text: "¿Cuál es el material que domina actualmente el 95% del mercado de semiconductores?",
+        options: ["Nitruro de Galio (GaN).", "Helio.", "Silicio (Si).", "Cobre."],
+        correct: "C", explanation: "Silicio hegemonía del 95%." },
+      { text: "¿Qué problema físico insuperable enfrenta el Silicio al llegar a los 2nm?",
+        options: ["Se vuelve demasiado pesado.", "Fugas eléctricas a nivel atómico.", "Se vuelve transparente y no conduce luz.", "Se expande con el frío."],
+        correct: "B", explanation: "Fugas eléctricas atómicas." },
+      { text: "¿Para qué aplicaciones es especialmente útil el Nitruro de Galio (GaN)?",
+        options: ["CPUs tradicionales y memorias NAND.", "Solo para pantallas de televisión antiguas.", "Cargadores ultrarrápidos y tecnologías inalámbricas de alta potencia.", "Para fabricar cables de alimentación gruesos."],
+        correct: "C", explanation: "Cargadores ultrarrápidos y RF de alta potencia." },
+      { text: "¿Qué sucede con las leyes de la física clásica al entrar en la nanoescala?",
+        options: ["Se vuelven más predecibles y fáciles de medir.", "Comienzan a tensarse y dejan paso a la computación cuántica.", "Permiten que los procesadores se encojan infinitamente sin problemas.", "Desaparecen por completo y la electricidad deja de existir."],
+        correct: "B", explanation: "Física clásica cede paso a cuántica." },
+      { text: "¿Qué cantidad aproximada de átomos de helio alineados equivalen a un transistor de 5nm?",
+        options: ["5 átomos.", "500 átomos.", "50 átomos.", "1 millón de átomos."],
+        correct: "C", explanation: "~50 átomos de helio." },
+      { text: "¿Qué procesador de 2018 albergó 6,900 millones de transistores en una sola pieza de silicio?",
+        options: ["Intel 4004.", "Snapdragon 888.", "Apple A12.", "Apple A14 Bionic."],
+        correct: "C", explanation: "Apple A12 (2018)." },
+      { text: "¿Cuál es el catalizador absoluto para tecnologías como la IA generativa y la conducción autónoma?",
+        options: ["El aumento del tamaño de los móviles.", "La nanometría y la miniaturización extrema.", "El regreso a procesadores de 14nm.", "La eliminación de las salas limpias."],
+        correct: "B", explanation: "Miniaturización extrema permite cómputo necesario." },
+      { text: "¿Qué empresas forman el 'oligopolio tecnológico' con capacidad de fabricar a escala sub-5nm?",
+        options: ["Apple, Google y Microsoft.", "TSMC, Samsung e Intel.", "Qualcomm, Sony y Huawei.", "IBM, AMD y NVIDIA."],
+        correct: "B", explanation: "TSMC, Samsung, Intel." },
+      { text: "¿Por qué se dice que 'más pequeño siempre significará infinitamente más grande'?",
+        options: ["Porque los chips ocupan más espacio físico en los dispositivos.", "Porque el dominio del microverso desbloquea la mayor revolución tecnológica a macroescala.", "Porque el precio de los componentes sube sin parar.", "Porque los átomos se expanden al ser manipulados."],
+        correct: "B", explanation: "Revolución tecnológica a macroescala desde el microverso." },
+      { text: "¿Qué permite la 'Ejecución Masiva' en un procesador moderno?",
+        options: ["Que el usuario pueda ver vídeos en blanco y negro.", "La coordinación de unidades que ejecutan hasta 600 mil millones de operaciones por segundo.", "Que el chip funcione sin necesidad de electricidad.", "Que la distancia entre transistores aumente para evitar el calor."],
+        correct: "B", explanation: "Hasta 600 mil millones de operaciones/segundo." }
+    ];
+
+    microQuestions.forEach((q, idx) => {
+      bank.push({
+        id: `micro-${idx}`,
+        text: q.text,
+        options: q.options,
+        correct: q.correct,
+        explanation: q.explanation
+      });
+    });
+
+    // ---------- CONFIGURACIÓN DE LA EVALUACIÓN ----------
+    const TOTAL_QUESTIONS = 10;               // preguntas por evaluación
+    let currentQuestions = [];                // array de objetos pregunta seleccionados
+    let userAnswers = new Array(TOTAL_QUESTIONS).fill(null); // 'A','B','C','D' o null
+
+    const questionsArea = document.getElementById('questionsArea');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const checkBtn = document.getElementById('checkBtn');
+    const newTestBtn = document.getElementById('newTestBtn');
+
+    // Función para seleccionar N preguntas aleatorias sin repetición
+    function shufflePickN(n) {
+      const indices = Array.from({ length: bank.length }, (_, i) => i);
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      return indices.slice(0, n).map(idx => bank[idx]);
+    }
+
+    function resetAnswers() {
+      userAnswers = new Array(TOTAL_QUESTIONS).fill(null);
+    }
+
+    function generateNewTest() {
+      currentQuestions = shufflePickN(TOTAL_QUESTIONS);
+      resetAnswers();
+      renderQuestions();
+      updateScoreDisplay(0);
+    }
+
+    function updateScoreDisplay(scoreValue = null) {
+      if (scoreValue === null) {
+        let correct = 0;
+        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+          if (userAnswers[i] && userAnswers[i] === currentQuestions[i].correct) correct++;
+        }
+        scoreDisplay.textContent = `${correct} / 10`;
+      } else {
+        scoreDisplay.textContent = `${scoreValue} / 10`;
+      }
+    }
+
+    function renderQuestions() {
+      if (!currentQuestions.length) return;
+      let html = '';
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const q = currentQuestions[i];
+        const selected = userAnswers[i];
+        const letters = q.options.length === 4 ? ['A','B','C','D'] : ['A','B','C'];
+        
+        let optionsHtml = '';
+        q.options.forEach((optText, optIdx) => {
+          const letter = letters[optIdx];
+          const checked = (selected === letter) ? 'checked' : '';
+          optionsHtml += `
+            <div class="option" data-qidx="${i}" data-letter="${letter}">
+              <input type="radio" name="q${i}" value="${letter}" id="q${i}_${letter}" ${checked}>
+              <label for="q${i}_${letter}"><strong>${letter})</strong> ${optText}</label>
+            </div>
+          `;
+        });
+
+        html += `
+          <div class="question-card" id="card-${i}">
+            <div class="question-header">
+              <span class="q-num">Pregunta ${i+1}</span>
+              <span>${q.text}</span>
+            </div>
+            <div class="options">
+              ${optionsHtml}
+            </div>
+            <div class="feedback" id="fb-${i}"></div>
+          </div>
+        `;
+      }
+      questionsArea.innerHTML = html;
+
+      // Asignar eventos a los radios y opciones
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            const val = e.target.value;
+            userAnswers[i] = val;
+            const fbDiv = document.getElementById(`fb-${i}`);
+            if (fbDiv) {
+              fbDiv.innerHTML = '';
+              fbDiv.className = 'feedback';
+            }
+            updateScoreDisplay();
+          });
+        });
+        const optionDivs = document.querySelectorAll(`.option[data-qidx="${i}"]`);
+        optionDivs.forEach(div => {
+          div.addEventListener('click', (e) => {
+            const radio = div.querySelector('input[type="radio"]');
+            if (radio && !radio.checked) {
+              radio.checked = true;
+              const letter = div.getAttribute('data-letter');
+              userAnswers[i] = letter;
+              const fbDiv = document.getElementById(`fb-${i}`);
+              if (fbDiv) { fbDiv.innerHTML = ''; fbDiv.className = 'feedback'; }
+              updateScoreDisplay();
+            }
+          });
+        });
+      }
+      updateScoreDisplay();
+    }
+
+    function correctEvaluation() {
+      let correctCount = 0;
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const q = currentQuestions[i];
+        const userAns = userAnswers[i];
+        const fbDiv = document.getElementById(`fb-${i}`);
+        if (!fbDiv) continue;
+        
+        const isCorrect = (userAns && userAns === q.correct);
+        if (isCorrect) correctCount++;
+        
+        const correctLetter = q.correct;
+        const letters = q.options.length === 4 ? ['A','B','C','D'] : ['A','B','C'];
+        const correctIdx = letters.indexOf(correctLetter);
+        const correctText = q.options[correctIdx];
+        
+        let fbHtml = '';
+        if (!userAns) {
+          fbHtml = `<span style="color:#b85e00;">⚠️ Sin responder. La respuesta correcta es ${correctLetter}) ${correctText}.<br>${q.explanation}</span>`;
+          fbDiv.className = 'feedback incorrect';
+        } else if (isCorrect) {
+          fbHtml = `✅ <strong>¡Correcto!</strong> ${q.explanation}`;
+          fbDiv.className = 'feedback correct';
+        } else {
+          fbHtml = `❌ <strong>Incorrecto.</strong> La respuesta correcta es ${correctLetter}) ${correctText}.<br>${q.explanation}`;
+          fbDiv.className = 'feedback incorrect';
+        }
+        fbDiv.innerHTML = fbHtml;
+      }
+      updateScoreDisplay(correctCount);
+      alert(`📊 Evaluación corregida.\nAciertos: ${correctCount} de 10 (${correctCount*10}%)\nRevisá los detalles en pantalla.`);
+    }
+
+    // Inicializar
+    function init() {
+      generateNewTest();
+    }
+
+    checkBtn.addEventListener('click', () => {
+      if (!currentQuestions.length) return;
+      correctEvaluation();
+    });
+
+    newTestBtn.addEventListener('click', () => {
+      generateNewTest();
+    });
+
+    init();
+  })();
+</script>
+</body>
+</html>
